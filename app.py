@@ -181,25 +181,29 @@ if uploaded_file is not None and reference_text != "":
 
         # ---------------- PDF ----------------
 
-        if st.session_state.get("done", False):
+if st.session_state.get("done", False):
+    transcription = st.session_state.transcription
+    similarity = st.session_state.similarity
+    score = st.session_state.score
+    grade = st.session_state.grade
+    if st.button("📄 Generate PDF Report"):
 
-            if st.button("📄 Generate PDF Report"):
+        pdf_path = generate_pdf(
+            st.session_state.transcription,
+            st.session_state.similarity,
+            st.session_state.score,
+            st.session_state.grade
+        )
+        st.success(f"Saved to: {pdf_path}")
+        import os
 
-                pdf_path = generate_pdf(
-                    st.session_state.transcription,
-                    st.session_state.similarity,
-                    st.session_state.score,
-                    st.session_state.grade
-                )
-                import os
+        st.write("PDF Path:", pdf_path)
+        st.write("File Exists:", os.path.exists(pdf_path))
+        with open(pdf_path, "rb") as pdf:
 
-                st.write("PDF Path:", pdf_path)
-                st.write("File Exists:", os.path.exists(pdf_path))
-                with open(pdf_path, "rb") as pdf:
-
-                    st.download_button(
-                        label="📥 Download PDF Report",
-                        data=pdf,
-                        file_name="Communication_Report.pdf",
-                        mime="application/pdf"
-                    )
+            st.download_button(
+                label="📥 Download PDF Report",
+                data=pdf,
+                file_name="Communication_Report.pdf",
+                mime="application/pdf"
+            )
