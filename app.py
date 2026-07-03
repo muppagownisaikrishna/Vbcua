@@ -8,7 +8,6 @@ from scoring_engine import calculate_score
 from report_generator import generate_pdf
 from audio_utils import extract_features
 from waveform import save_waveform
-
 st.set_page_config(
     page_title="Voice-Based Communication Understanding Analyzer",
     page_icon="🎤",
@@ -98,6 +97,7 @@ if uploaded_file is not None and reference_text != "":
             # SAVE STATE (IMPORTANT FIX)
             st.session_state.done = True
             st.session_state.transcription = transcription
+            st.session_state.reference_text = reference_text 
             st.session_state.similarity = similarity
             st.session_state.score = score
             st.session_state.grade = grade
@@ -189,10 +189,13 @@ if st.session_state.get("done", False):
     if st.button("📄 Generate PDF Report"):
 
         pdf_path = generate_pdf(
+            st.session_state.reference_text,
             st.session_state.transcription,
             st.session_state.similarity,
             st.session_state.score,
-            st.session_state.grade
+            st.session_state.grade,
+            st.session_state.audio_features,
+            st.session_state.waveform_path
         )
         st.success(f"Saved to: {pdf_path}")
         import os
