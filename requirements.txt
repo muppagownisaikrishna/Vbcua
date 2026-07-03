@@ -1,7 +1,6 @@
 streamlit
 openai-whisper
 torch
-ffmpeg-python
 librosa
 numpy
 soundfile
@@ -9,3 +8,4 @@ sentence-transformers
 scikit-learn
 reportlab
 matplotlib
+ffmpeg-python
